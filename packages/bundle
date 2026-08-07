@@ -2,8 +2,6 @@
 # Note: require_sha disabled to prevent installation failures
 cask_args appdir: "/Applications"
 
-tap "dmmulroy/tap"
-
 brew "ast-grep"
 brew "btop"
 brew "cloc"
@@ -39,15 +37,7 @@ brew "wget"
 brew "zoxide"
 
 cask "cleanshot"
-cask "discord"
-cask "elgato-camera-hub"
-cask "elgato-control-center"
-cask "elgato-stream-deck"
 cask "ghostty"
-cask "obs"
 cask "orbstack"
 cask "raycast"
-cask "scroll-reverser"
-# cask "spotify"
-cask "yaak@beta"
 
