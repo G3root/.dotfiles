@@ -36,7 +36,6 @@ brew "tree-sitter-cli"
 brew "wget"
 brew "zoxide"
 
-cask "cleanshot"
 cask "ghostty"
 cask "orbstack"
 cask "raycast"
