@@ -20,7 +20,7 @@ readonly DOTFILES_DIR
 # Configuration
 readonly PACKAGES_DIR="${DOTFILES_DIR}/packages"
 readonly HOME_DIR="${DOTFILES_DIR}/home"
-readonly GITHUB_EMAIL="dillon.mulroy@gmail.com"
+readonly GITHUB_EMAIL="nafeesnazik21@gmail.com"
 readonly GITHUB_PRIVATE_KEY_PATH="${HOME}/.ssh/id_ed25519_github"
 readonly LEGACY_GITHUB_PRIVATE_KEY_PATH="${HOME}/.ssh/key.pub"
 readonly FONT_REPO_URL="git@github.com:dmmulroy/mono-lisa.git"
