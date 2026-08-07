@@ -8,12 +8,8 @@ auto-update-channel = tip
 shell-integration = fish
 quit-after-last-window-closed = true
 
-# Font family
-font-family = MonoLisa
-font-style = Regular
-font-style-italic = Regular Italic
-font-style-bold = Bold
-font-style-bold-italic = Bold Italic
+# Font family (matches VSCodium: Geist Mono, fallback Fira Code)
+font-family = Geist Mono, Fira Code
 
 # Font size
 font-size = 13

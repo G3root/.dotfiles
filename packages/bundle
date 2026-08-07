@@ -36,6 +36,7 @@ brew "tree-sitter-cli"
 brew "wget"
 brew "zoxide"
 
+cask "font-geist-mono"
 cask "ghostty"
 cask "orbstack"
 cask "raycast"
