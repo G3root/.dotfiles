@@ -25,8 +25,7 @@ npm run check
 
 Current workspace-managed extensions live under:
 
-- `agent/extensions/codex-fast-variants`
-- `agent/extensions/opencode-cloudflare`
+- `agent/extensions/private-gateway`
 - `agent/extensions/pi-skill-toggle`
 - `agent/extensions/save-md`
 
