@@ -2,6 +2,7 @@
 # Note: require_sha disabled to prevent installation failures
 cask_args appdir: "/Applications"
 
+tap "plannotator/tap"
 brew "ast-grep"
 brew "btop"
 brew "cloc"
@@ -25,6 +26,7 @@ brew "lua-language-server"
 brew "luacheck"
 brew "mole"
 brew "neovim"
+brew "plannotator-tui"
 brew "python@3.14"
 brew "ripgrep"
 brew "shellcheck"

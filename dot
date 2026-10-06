@@ -20,6 +20,7 @@ readonly DOTFILES_DIR
 # Configuration
 readonly PACKAGES_DIR="${DOTFILES_DIR}/packages"
 readonly HOME_DIR="${DOTFILES_DIR}/home"
+readonly HERDR_PLUGIN_SOURCES_FILE="${HOME_DIR}/.config/herdr/plugins.txt"
 readonly GITHUB_EMAIL="nafeesnazik21@gmail.com"
 readonly GITHUB_PRIVATE_KEY_PATH="${HOME}/.ssh/id_ed25519_github"
 readonly LEGACY_GITHUB_PRIVATE_KEY_PATH="${HOME}/.ssh/key.pub"
@@ -202,6 +203,7 @@ TOOL_REGISTRY=(
     "Brewfile packages ;; -    ;; fn:__install_packages     ;; true  ;; -         ;; false"
     "Stow dotfiles     ;; -    ;; fn:__stow_dotfiles        ;; true  ;; -         ;; false"
     "Bun               ;; bun  ;; fn:__install_bun          ;; true  ;; -         ;; true"
+    "Herdr plugins     ;; -    ;; fn:__sync_herdr_plugins   ;; true  ;; -         ;; false"
     "Vite+             ;; vp   ;; fn:__install_vite_plus    ;; true  ;; -         ;; true"
     "pi                ;; pi   ;; fn:__install_pi           ;; true  ;; -         ;; true"
     "SSH key           ;; -    ;; fn:__generate_ssh_key     ;; false ;; SKIP_SSH  ;; false"
@@ -350,6 +352,46 @@ __install_vite_plus() {
     fi
 }
 
+__sync_herdr_plugins() {
+    if ! __command_exists herdr; then
+        __print_error "Herdr is not installed"
+        return 1
+    fi
+
+    if [[ ! -f "$HERDR_PLUGIN_SOURCES_FILE" ]]; then
+        __print_error "Herdr plugin source list not found: $HERDR_PLUGIN_SOURCES_FILE"
+        return 1
+    fi
+
+    local plugin_source
+    local failed_plugins=()
+
+    __print_info "Installing and updating Herdr plugins..."
+    while IFS= read -r plugin_source || [[ -n "$plugin_source" ]]; do
+        plugin_source="${plugin_source%%#*}"
+        plugin_source="${plugin_source//[[:space:]]/}"
+        [[ -z "$plugin_source" ]] && continue
+
+        __print_info "Syncing Herdr plugin: $plugin_source"
+        if herdr plugin install "$plugin_source" --yes; then
+            __print_success "Herdr plugin synced: $plugin_source"
+        else
+            failed_plugins+=("$plugin_source")
+        fi
+    done < "$HERDR_PLUGIN_SOURCES_FILE"
+
+    if [[ ${#failed_plugins[@]} -gt 0 ]]; then
+        __print_error "Failed to sync Herdr plugins: ${failed_plugins[*]}"
+        return 1
+    fi
+
+    if herdr status server >/dev/null 2>&1; then
+        herdr server reload-config >/dev/null
+    fi
+
+    __print_success "Herdr plugins are up to date"
+}
+
 __install_pi() {
     if __command_exists pi; then
         __print_success "pi is already installed"
@@ -376,6 +418,11 @@ __install_packages() {
     local line parsed package_type package_name
 
     __print_info "Installing base packages..."
+
+    # Homebrew 6 requires explicit trust before loading third-party tap formulae.
+    if brew help trust >/dev/null 2>&1; then
+        brew trust plannotator/tap >/dev/null
+    fi
 
     if brew bundle --file="${PACKAGES_DIR}/bundle"; then
         __print_success "All base packages installed successfully"
@@ -788,10 +835,13 @@ cmd_update() {
     # Re-stow dotfiles before pi uses checked-out skills and configuration.
     __stow_dotfiles
 
+    # Install missing Herdr plugins and refresh existing managed checkouts.
+    __sync_herdr_plugins || return 1
+
     # Update pi and its configured packages.
     if __command_exists pi; then
         __print_info "Updating pi and configured packages..."
-        if (cd "$DOTFILES_DIR" && pi update); then
+        if (cd "$DOTFILES_DIR" && pi update --all); then
             __print_success "pi and configured packages updated"
         else
             __print_error "Failed to update pi and configured packages"

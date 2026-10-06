@@ -29,7 +29,7 @@ home/.config/opencode/plugins/git-ai.ts
 home/.plannotator/*
 !home/.plannotator/config.json
 
-# herdr runtime/state
+# Herdr runtime/state (installed plugin sources are tracked in plugins.txt)
 home/.config/herdr/*.log
 home/.config/herdr/session-history.json
 home/.config/herdr/session.json
@@ -37,6 +37,9 @@ home/.config/herdr/release-notes.json
 home/.config/herdr/plugins.json
 home/.config/herdr/plugins/
 home/.config/herdr/.plugins.lock
+home/.config/herdr/session-snapshots/
+home/.config/herdr/*.sock
+home/.config/herdr/*.sock.*
 
 # jj per-repo configs
 home/.config/jj/repos/
@@ -65,7 +68,6 @@ home/.pi/agent/extensions/**/node_modules/
 !home/.pi/agent/themes/*.json
 !home/.pi/agent/extensions/
 !home/.pi/agent/extensions/**
-!home/.pi/agent/mcp.json
 !home/.pi/agent/APPEND_SYSTEM.md
 
 home/.agents/.skill-lock.json

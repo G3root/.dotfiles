@@ -290,6 +290,19 @@ vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selected block u
 
 vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste without overwriting register" })
 
+vim.keymap.set("x", "<leader>a", function()
+	-- Hand the selection to Herdr Annotate through a short-lived local file.
+	vim.cmd('normal! "zy')
+	local runtime_dir = vim.env.XDG_RUNTIME_DIR
+	if not runtime_dir or runtime_dir == "" then
+		runtime_dir = vim.uv.os_tmpdir()
+	end
+	local handoff_dir = runtime_dir .. "/herdr-annotate-" .. vim.uv.getuid()
+	vim.fn.mkdir(handoff_dir, "p", "0700")
+	vim.fn.writefile(vim.split(vim.fn.getreg("z"), "\n"), handoff_dir .. "/selection")
+	vim.fn.jobstart({ "herdr", "plugin", "action", "invoke", "annotate.capture" }, { detach = true })
+end, { desc = "Annotate selection in Herdr" })
+
 -- This keymap indents the selected visual block to the left and reselects it
 vim.keymap.set("x", "<<", function()
 	vim.cmd("normal! <<")
