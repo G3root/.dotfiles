@@ -74,6 +74,15 @@
       "skillFolderHash": "58e3cdf81557d0af108d69441f5bb31f703f9ad1",
       "installedAt": "2026-09-08T13:06:55.301Z",
       "updatedAt": "2026-09-08T13:06:55.301Z"
+    },
+    "vitest": {
+      "source": "antfu/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/antfu/skills.git",
+      "skillPath": "skills/vitest/SKILL.md",
+      "skillFolderHash": "0ed74afc98af8324843b8514184c43cd6d6411ef",
+      "installedAt": "2026-10-11T02:50:27.195Z",
+      "updatedAt": "2026-10-11T02:50:27.195Z"
     }
   },
   "dismissed": {
